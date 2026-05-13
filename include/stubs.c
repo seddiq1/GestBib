@@ -29,6 +29,7 @@ void registra_utente() {
     
     nuovo->id = num_utenti + 1;
     printf("Nome utente: ");
+    fflush(stdout);
     scanf(" %[^\n]", nuovo->nome);
     pulisci_buffer();
     nuovo->prestiti_attivi = NULL;

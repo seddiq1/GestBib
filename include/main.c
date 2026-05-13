@@ -6,8 +6,11 @@
 #include "../include/file_io.h"
 #include "../include/utils.h"
 
+// Forward declaration
+void pulisci_buffer();
+
 void menu_libri() {
-    int scelta;
+    int scelta = 0;  // Inizializza a 0
     do {
         printf("\n--- GESTIONE LIBRI ---\n");
         printf("1. Aggiungi Libro\n");
@@ -15,6 +18,7 @@ void menu_libri() {
         printf("3. Elimina Libro\n");
         printf("4. Torna al Menu Principale\n");
         printf("Scelta: ");
+        fflush(stdout);
         scanf("%d", &scelta);
         pulisci_buffer();
 
@@ -29,7 +33,15 @@ void menu_libri() {
 }
 
 int main() {
-    int scelta;
+    int scelta = 0;  // Inizializza a 0
+    CodaNotifiche notifiche;
+    inizializza_coda(&notifiche);
+
+    carica_dati();
+    controlla_scadenze(&notifiche);
+
+int main() {
+    int scelta = 0;
     CodaNotifiche notifiche;
     inizializza_coda(&notifiche);
 
@@ -45,6 +57,7 @@ int main() {
         printf("4. Statistiche\n");
         printf("5. Salva ed Esci\n");
         printf("Scelta: ");
+        fflush(stdout);
         scanf("%d", &scelta);
         pulisci_buffer();
 

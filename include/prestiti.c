@@ -24,9 +24,11 @@ void crea_prestito() {
     printf("\n--- CREAZIONE NUOVO PRESTITO ---\n");
     int id_u, id_l;
     printf("ID Utente: "); 
+    fflush(stdout);
     scanf("%d", &id_u);
     pulisci_buffer();
     printf("ID Libro: "); 
+    fflush(stdout);
     scanf("%d", &id_l);
     pulisci_buffer();
 

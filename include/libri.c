@@ -14,12 +14,16 @@ void aggiungi_libro() {
     
     nuovo->id = num_libri + 1;
     printf("Titolo: "); 
+    fflush(stdout);
     scanf(" %[^\n]", nuovo->titolo);
     printf("Autore: "); 
+    fflush(stdout);
     scanf(" %[^\n]", nuovo->autore);
     printf("Genere: "); 
+    fflush(stdout);
     scanf(" %[^\n]", nuovo->genere);
     printf("Numero di copie: "); 
+    fflush(stdout);
     scanf("%d", &nuovo->copie_disponibili);
     pulisci_buffer();
     nuovo->totale_prestiti = 0;
@@ -63,6 +67,7 @@ void elimina_libro() {
     
     visualizza_libri();
     printf("\nInserisci l'ID del libro da eliminare: ");
+    fflush(stdout);
     int id;
     scanf("%d", &id);
     pulisci_buffer();
