@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../include/prestiti.h"
+#include "../include/utils.h"
 
 void inizializza_coda(CodaNotifiche *q) {
     q->fronte = q->retro = NULL;
@@ -20,9 +21,14 @@ void aggiungi_notifica(CodaNotifiche *q, char *msg) {
 }
 
 void crea_prestito() {
+    printf("\n--- CREAZIONE NUOVO PRESTITO ---\n");
     int id_u, id_l;
-    printf("ID Utente: "); scanf("%d", &id_u);
-    printf("ID Libro: "); scanf("%d", &id_l);
+    printf("ID Utente: "); 
+    scanf("%d", &id_u);
+    pulisci_buffer();
+    printf("ID Libro: "); 
+    scanf("%d", &id_l);
+    pulisci_buffer();
 
     Utente *u = cerca_utente_id(id_u);
     Libro *l = cerca_libro_id(id_l);
@@ -44,18 +50,20 @@ void crea_prestito() {
         nuovoNodo->next = u->prestiti_attivi;
         u->prestiti_attivi = nuovoNodo;
 
-        printf("Prestito registrato con successo!\n");
+        printf("✓ Prestito registrato con successo!\n");
     } else {
-        printf("Errore: Utente/Libro non trovato o copie esaurite.\n");
+        if (!u) printf("✗ Errore: Utente non trovato!\n");
+        if (!l) printf("✗ Errore: Libro non trovato!\n");
+        if (l && l->copie_disponibili <= 0) printf("✗ Errore: Copie esaurite!\n");
     }
 }
 
 void visualizza_notifiche(CodaNotifiche *q) {
     if (q->fronte == NULL) return;
-    printf("[NOTIFICHE SCADENZE]\n");
+    printf("\n[NOTIFICHE SCADENZE]\n");
     while (q->fronte != NULL) {
         NodoNotifica *temp = q->fronte;
-        printf("- %s\n", temp->messaggio);
+        printf("⚠ %s\n", temp->messaggio);
         q->fronte = q->fronte->next;
         free(temp);
     }
