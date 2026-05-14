@@ -22,10 +22,21 @@ void aggiungi_libro() {
     printf("Genere: "); 
     fflush(stdout);
     scanf(" %[^\n]", nuovo->genere);
-    printf("Numero di copie: "); 
-    fflush(stdout);
-    scanf("%d", &nuovo->copie_disponibili);
-    pulisci_buffer();
+    do {
+        printf("Numero di copie: "); 
+        fflush(stdout);
+        if (scanf("%d", &nuovo->copie_disponibili) != 1) {
+            pulisci_buffer();
+            printf("✗ Inserisci un numero valido.\n");
+            nuovo->copie_disponibili = -1;
+            continue;
+        }
+        pulisci_buffer();
+        if (nuovo->copie_disponibili < 0) {
+            printf("✗ Il numero di copie non può essere negativo.\n");
+        }
+    } while (nuovo->copie_disponibili < 0);
+
     nuovo->totale_prestiti = 0;
 
     catalogo[num_libri++] = nuovo;

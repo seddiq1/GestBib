@@ -22,6 +22,15 @@ void aggiungi_notifica(CodaNotifiche *q, char *msg) {
 
 void crea_prestito() {
     printf("\n--- CREAZIONE NUOVO PRESTITO ---\n");
+    if (num_utenti == 0) {
+        printf("✗ Nessun utente registrato. Registra prima un utente.\n");
+        return;
+    }
+    if (num_libri == 0) {
+        printf("✗ Nessun libro disponibile. Aggiungi prima un libro.\n");
+        return;
+    }
+
     int id_u, id_l;
     printf("ID Utente: "); 
     fflush(stdout);
@@ -35,29 +44,36 @@ void crea_prestito() {
     Utente *u = cerca_utente_id(id_u);
     Libro *l = cerca_libro_id(id_l);
 
-    if (u && l && l->copie_disponibili > 0) {
-        Prestito *p = malloc(sizeof(Prestito));
-        p->utente = u;
-        p->libro = l;
-        p->data_inizio = time(NULL);
-        p->data_scadenza = p->data_inizio + (30 * 24 * 60 * 60); // +30 giorni
-        p->restituito = 0;
-        
-        l->copie_disponibili--;
-        l->totale_prestiti++;
-
-        // Aggiunta alla lista collegata dell'utente
-        NodoPrestito *nuovoNodo = malloc(sizeof(NodoPrestito));
-        nuovoNodo->dati_prestito = p;
-        nuovoNodo->next = u->prestiti_attivi;
-        u->prestiti_attivi = nuovoNodo;
-
-        printf("✓ Prestito registrato con successo!\n");
-    } else {
-        if (!u) printf("✗ Errore: Utente non trovato!\n");
-        if (!l) printf("✗ Errore: Libro non trovato!\n");
-        if (l && l->copie_disponibili <= 0) printf("✗ Errore: Copie esaurite!\n");
+    if (!u) {
+        printf("✗ Errore: Utente non trovato!\n");
     }
+    if (!l) {
+        printf("✗ Errore: Libro non trovato!\n");
+    }
+    if (l && l->copie_disponibili <= 0) {
+        printf("✗ Errore: Non ci sono copie disponibili per il libro selezionato!\n");
+    }
+    if (!u || !l || (l && l->copie_disponibili <= 0)) {
+        return;
+    }
+
+    Prestito *p = malloc(sizeof(Prestito));
+    p->utente = u;
+    p->libro = l;
+    p->data_inizio = time(NULL);
+    p->data_scadenza = p->data_inizio + (30 * 24 * 60 * 60); // +30 giorni
+    p->restituito = 0;
+
+    l->copie_disponibili--;
+    l->totale_prestiti++;
+
+    // Aggiunta alla lista collegata dell'utente
+    NodoPrestito *nuovoNodo = malloc(sizeof(NodoPrestito));
+    nuovoNodo->dati_prestito = p;
+    nuovoNodo->next = u->prestiti_attivi;
+    u->prestiti_attivi = nuovoNodo;
+
+    printf("✓ Prestito registrato con successo!\n");
 }
 
 void visualizza_notifiche(CodaNotifiche *q) {
