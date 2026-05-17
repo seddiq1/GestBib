@@ -9,32 +9,6 @@
 // Forward declaration
 void pulisci_buffer();
 
-void menu_libri() {
-    int scelta = 0;  // Inizializza a 0
-    do {
-        printf("\n--- GESTIONE LIBRI ---\n");
-        printf("1. Aggiungi Libro\n");
-        printf("2. Visualizza Catalogo\n");
-        printf("3. Elimina Libro\n");
-        printf("4. Torna al Menu Principale\n");
-        printf("Scelta: ");
-        fflush(stdout);
-        if (scanf("%d", &scelta) != 1) {
-            pulisci_buffer();
-            scelta = -1;
-        } else {
-            pulisci_buffer();
-        }
-
-        switch(scelta) {
-            case 1: aggiungi_libro(); break;
-            case 2: visualizza_libri(); break;
-            case 3: elimina_libro(); break;
-            case 4: return;
-            default: printf("Opzione non valida!\n");
-        }
-    } while(scelta != 4);
-}
 
 int main() {
     int scelta = 0;
