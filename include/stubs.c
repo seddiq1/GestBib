@@ -10,6 +10,9 @@
 // Forward declarations
 void pulisci_buffer();
 void aggiungi_notifica(CodaNotifiche *q, char *msg);
+static void libera_prestiti_utente(Utente *u);
+static void libera_utenti();
+static void libera_catalogo();
 
 // Global variables for utenti
 Utente **utenti = NULL;
@@ -58,6 +61,44 @@ void salva_dati() {
 
     fclose(fp);
     printf("Dati salvati con successo!\n");
+    libera_utenti();
+    libera_catalogo();
+}
+
+static void libera_prestiti_utente(Utente *u) {
+    NodoPrestito *nodo = u->prestiti_attivi;
+    while (nodo) {
+        NodoPrestito *next = nodo->next;
+        if (nodo->dati_prestito) {
+            free(nodo->dati_prestito);
+        }
+        free(nodo);
+        nodo = next;
+    }
+    u->prestiti_attivi = NULL;
+}
+
+static void libera_utenti() {
+    if (utenti == NULL) return;
+    for (int i = 0; i < num_utenti; i++) {
+        if (utenti[i]) {
+            libera_prestiti_utente(utenti[i]);
+            free(utenti[i]);
+        }
+    }
+    free(utenti);
+    utenti = NULL;
+    num_utenti = 0;
+}
+
+static void libera_catalogo() {
+    if (catalogo == NULL) return;
+    for (int i = 0; i < num_libri; i++) {
+        free(catalogo[i]);
+    }
+    free(catalogo);
+    catalogo = NULL;
+    num_libri = 0;
 }
 
 // Utenti implementation
